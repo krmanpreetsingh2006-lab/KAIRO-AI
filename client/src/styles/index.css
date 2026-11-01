@@ -1,0 +1,195 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg-kairo: #090A0F;
+    --card-kairo: #0F111A;
+    --surface-kairo: #141724;
+    --border-kairo: rgba(255, 255, 255, 0.08);
+    --border-highlight: rgba(6, 182, 212, 0.25);
+    --accent-glow: rgba(6, 182, 212, 0.35);
+  }
+
+  .theme-obsidian {
+    --bg-kairo: #08090E;
+    --card-kairo: #0E1018;
+    --surface-kairo: #131622;
+    --border-kairo: rgba(255, 255, 255, 0.07);
+    --accent-glow: rgba(6, 182, 212, 0.35);
+  }
+
+  .theme-midnight-violet {
+    --bg-kairo: #0A0814;
+    --card-kairo: #110E22;
+    --surface-kairo: #181432;
+    --border-kairo: rgba(167, 139, 250, 0.12);
+    --accent-glow: rgba(168, 85, 247, 0.45);
+  }
+
+  .theme-graphite {
+    --bg-kairo: #0B0D11;
+    --card-kairo: #12151B;
+    --surface-kairo: #1A1E26;
+    --border-kairo: rgba(255, 255, 255, 0.08);
+    --accent-glow: rgba(56, 189, 248, 0.35);
+  }
+
+  body {
+    background-color: var(--bg-kairo);
+    color: #F1F4F9;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    overflow: hidden;
+    height: 100vh;
+    height: 100dvh;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Ambient Radial Background Light */
+.ambient-glow {
+  background: radial-gradient(circle at 50% 0%, rgba(6, 182, 212, 0.12) 0%, rgba(59, 130, 246, 0.06) 35%, transparent 70%);
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 9999px;
+  transition: background 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* Glassmorphism utility */
+.glass-panel {
+  background: rgba(13, 16, 26, 0.72);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-kairo);
+}
+
+.glass-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%), rgba(14, 17, 28, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Typing cursor animation */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.streaming-cursor {
+  display: inline-block;
+  width: 3px;
+  height: 1.15em;
+  background: linear-gradient(180deg, #38BDF8 0%, #06B6D4 100%);
+  margin-left: 4px;
+  vertical-align: text-bottom;
+  animation: blink 0.8s infinite;
+  border-radius: 1.5px;
+  box-shadow: 0 0 10px rgba(6, 182, 212, 0.8);
+}
+
+/* Smooth Entrance Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.98); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideRight {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-slideUp {
+  animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-slideRight {
+  animation: slideRight 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Syntax Highlighting Styles (Obsidian Pro Theme) */
+pre code.hljs {
+  display: block;
+  overflow-x: auto;
+  padding: 1.15rem;
+  background: #090B12 !important;
+  color: #E2E8F0 !important;
+  font-family: 'JetBrains Mono', 'Fira Code', Menlo, Monaco, monospace;
+  font-size: 0.825rem;
+  line-height: 1.65;
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-subst {
+  color: #C084FC !important;
+  font-weight: 500;
+}
+
+.hljs-string,
+.hljs-title,
+.hljs-section,
+.hljs-attribute,
+.hljs-literal,
+.hljs-template-tag,
+.hljs-template-variable,
+.hljs-type,
+.hljs-addition {
+  color: #38BDF8 !important;
+}
+
+.hljs-comment,
+.hljs-quote,
+.hljs-deletion,
+.hljs-meta {
+  color: #64748B !important;
+  font-style: italic;
+}
+
+.hljs-number,
+.hljs-regexp,
+.hljs-link {
+  color: #F472B6 !important;
+}
+
+.hljs-variable,
+.hljs-params {
+  color: #F8FAFC !important;
+}
+
+.hljs-built_in,
+.hljs-class .hljs-title {
+  color: #FCD34D !important;
+}
+
+.hljs-function {
+  color: #818CF8 !important;
+}
