@@ -54,6 +54,8 @@ app.get('/api/health', (req, res) => {
     status: 'online',
     product: 'KAIRO AI',
     tagline: 'Intelligence Beyond Limits.',
+    version: '1.0.1',
+    timezone: 'Asia/Kolkata',
     model: process.env.GEMINI_MODEL || 'gemini-flash-lite-latest',
     apiKeyConfigured: isKeyConfigured,
     timestamp: new Date().toISOString(),

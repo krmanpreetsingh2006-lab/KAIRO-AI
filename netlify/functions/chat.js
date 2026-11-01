@@ -1,4 +1,5 @@
 import { GoogleGenAI } from '@google/genai';
+import { getAuthoritativeTemporalContext } from './utils/dateTime.js';
 
 // In-memory sliding window rate limiter per client IP
 const clientRequestLog = new Map();
@@ -208,9 +209,19 @@ export default async (req, context) => {
           };
         });
 
-      const combinedSystemInstruction = systemInstruction && systemInstruction.trim() !== ''
-        ? `${DEFAULT_SYSTEM_INSTRUCTION}\n\nAdditional User Directives:\n${systemInstruction.trim()}`
-        : DEFAULT_SYSTEM_INSTRUCTION;
+      // Dynamically generate fresh authoritative temporal context on every request
+      const temporalContext = getAuthoritativeTemporalContext();
+
+      const instructionParts = [
+        DEFAULT_SYSTEM_INSTRUCTION,
+        temporalContext.systemInstructionText,
+      ];
+
+      if (systemInstruction && typeof systemInstruction === 'string' && systemInstruction.trim() !== '') {
+        instructionParts.push(`Additional User Directives:\n${systemInstruction.trim()}`);
+      }
+
+      const combinedSystemInstruction = instructionParts.join('\n\n');
 
       let streamResponse = null;
       let lastError = null;

@@ -1,6 +1,6 @@
 {
   "name": "kairo-ai",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "KAIRO AI - Intelligence Beyond Limits. Premium AI Chatbot web application.",
   "type": "module",
   "private": true,
@@ -11,7 +11,9 @@
     "install:all": "npm install && cd server && npm install && cd ../client && npm install",
     "build": "npm --prefix client install && npm --prefix client run build",
     "start": "cd server && npm start",
-    "test": "node netlify/test-netlify-functions.js"
+    "test": "node netlify/test-netlify-functions.js",
+    "test:server": "node server/test-server.js",
+    "test:dates": "node test-date-hotfix.js"
   },
   "dependencies": {
     "@google/genai": "^2.32.0",

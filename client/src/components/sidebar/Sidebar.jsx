@@ -395,7 +395,7 @@ export default function Sidebar({
                   : 'Relay Offline'}
               </span>
             </div>
-            <span className="text-[10px] text-slate-500 font-mono">v1.0.0</span>
+            <span className="text-[10px] text-slate-500 font-mono">v1.0.1</span>
           </div>
         ) : null}
 

@@ -419,7 +419,7 @@ export default function SettingsModal() {
                 </p>
                 <div className="pt-2">
                   <span className="text-[11px] px-3 py-1 rounded-full bg-violet-500/10 text-violet-300 border border-violet-500/30 font-mono">
-                    Release 1.0.0 — Production Ready
+                    Release 1.0.1 — Production Ready (Temporal Grounded)
                   </span>
                 </div>
               </div>

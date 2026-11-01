@@ -1,10 +1,28 @@
 import healthHandler from './functions/health.js';
 import chatHandler from './functions/chat.js';
+import { getAuthoritativeTemporalContext } from './functions/utils/dateTime.js';
 
 async function runTests() {
   console.log('--- TESTING STREAMLINED NETLIFY SERVERLESS FUNCTIONS ---');
 
-  // 1. Test Health Function
+  // 1. Test Dynamic Server-Side Temporal Grounding Utility
+  const temporal = getAuthoritativeTemporalContext();
+  console.log('[PASS] Netlify Temporal Grounding Context:');
+  console.log(`  - Weekday: ${temporal.weekday}`);
+  console.log(`  - Full Date: ${temporal.fullDate}`);
+  console.log(`  - ISO Date: ${temporal.isoDate}`);
+  console.log(`  - Time (12h): ${temporal.time12}`);
+  console.log(`  - Time (24h): ${temporal.time24}`);
+  console.log(`  - Timezone: ${temporal.timeZone} (${temporal.timeZoneOffset})`);
+  console.log(`  - Yesterday: ${temporal.yesterday.weekday}, ${temporal.yesterday.fullDate}`);
+  console.log(`  - Tomorrow: ${temporal.tomorrow.weekday}, ${temporal.tomorrow.fullDate}`);
+
+  if (!temporal.isoDate.match(/^\d{4}-\d{2}-\d{2}$/)) throw new Error('Invalid ISO date format');
+  if (!temporal.systemInstructionText.includes('TEMPORAL GROUNDING')) throw new Error('Missing grounding instruction');
+  if (!temporal.systemInstructionText.includes('Asia/Kolkata')) throw new Error('Missing timezone in instruction');
+  if (!temporal.systemInstructionText.includes('guess, estimate, or hallucinate')) throw new Error('Missing anti-hallucination directive');
+
+  // 2. Test Health Function
   const healthReq = new Request('http://localhost/.netlify/functions/health', {
     method: 'GET',
   });
