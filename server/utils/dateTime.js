@@ -101,7 +101,8 @@ MANDATORY TEMPORAL RULES:
    - "What will tomorrow's date be?" -> Respond with tomorrow's date: ${tomorrow.fullDate} (${tomorrow.weekday}).
    - "What is the current time in India?" -> Respond with the current time in IST: ${time12} IST (${time24} IST).
 4. Accurately resolve all relative temporal expressions (e.g., today, yesterday, tomorrow, this week, current month, current year) relative to ${fullDate}.
-5. If the user asks for a simple, brief, or direct answer, follow the adaptive response directive while preserving 100% factual date and time accuracy.`;
+5. OVERRIDE PRIOR CONVERSATION HISTORY: Even if earlier assistant or user turns in this conversation or session mention May 2024, May 22, 2024, or any past dates, those prior messages contain obsolete or ungrounded timestamps. You MUST strictly ignore any past dates in the chat history and answer using today's verified server date: ${fullDate} (${weekday}).
+6. If the user asks for a simple, brief, or direct answer, follow the adaptive response directive while preserving 100% factual date and time accuracy.`;
 
   return {
     isoDate,

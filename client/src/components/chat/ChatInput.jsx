@@ -281,7 +281,7 @@ export default function ChatInput({
   const hasContentOrMedia = (input.trim().length > 0 || attachments.length > 0) && !isOverLimit && !disabled;
 
   return (
-    <div className="w-full max-w-3xl lg:max-w-4xl mx-auto px-4 pb-3 sm:pb-5 select-none">
+    <div className="w-full max-w-3xl lg:max-w-4xl mx-auto px-3 sm:px-4 pb-2 sm:pb-3 pb-[max(0.6rem,env(safe-area-inset-bottom))] select-none">
       {/* Hidden File Inputs */}
       <input
         ref={imageInputRef}
@@ -326,10 +326,10 @@ export default function ChatInput({
         onDragLeave={handleDragLeave}
         onDragOver={handleDragOver}
         onDrop={handleDrop}
-        className={`relative flex flex-col rounded-[26px] bg-[#0E111A]/95 border shadow-[0_12px_40px_rgba(0,0,0,0.6)] backdrop-blur-2xl transition-all duration-300 ${
+        className={`relative flex flex-col rounded-[22px] sm:rounded-[26px] bg-[#0E111A]/95 border shadow-[0_8px_32px_rgba(0,0,0,0.5)] backdrop-blur-2xl transition-all duration-200 ${
           isDragging
-            ? 'border-cyan-400 shadow-[0_0_35px_rgba(6,182,212,0.35)] bg-cyan-950/20'
-            : 'border-white/[0.12] focus-within:border-cyan-400/50 focus-within:shadow-[0_0_35px_rgba(6,182,212,0.18),0_15px_50px_rgba(0,0,0,0.7)]'
+            ? 'border-cyan-400 shadow-[0_0_30px_rgba(6,182,212,0.3)] bg-cyan-950/20'
+            : 'border-white/[0.10] focus-within:border-cyan-400/50 focus-within:shadow-[0_0_30px_rgba(6,182,212,0.15),0_12px_40px_rgba(0,0,0,0.6)]'
         }`}
       >
         {/* Drag and Drop Visual Overlay */}
@@ -534,15 +534,16 @@ export default function ChatInput({
       </form>
 
       {/* Creator Footer Branding */}
-      <footer className="text-center mt-2.5 space-y-0.5 select-none leading-relaxed">
-        <div className="text-[11px] text-slate-400 flex items-center justify-center gap-1.5 flex-wrap">
+      <footer className="text-center mt-1.5 sm:mt-2 select-none leading-tight pb-0.5">
+        <div className="text-[10.5px] text-slate-500 flex items-center justify-center gap-1.5 flex-wrap">
           <span>Designed & Developed by</span>
-          <span className="font-semibold text-cyan-400 hover:text-cyan-300 transition-colors">
+          <span className="font-semibold text-cyan-400/90 hover:text-cyan-300 transition-colors">
             Manpreet Singh
           </span>
-        </div>
-        <div className="text-[10px] text-slate-500 font-mono tracking-wide">
-          © 2026 Manpreet Singh. All Rights Reserved.
+          <span className="text-slate-600 hidden sm:inline">•</span>
+          <span className="text-[10px] text-slate-500/80 font-mono">
+            © 2026
+          </span>
         </div>
       </footer>
     </div>

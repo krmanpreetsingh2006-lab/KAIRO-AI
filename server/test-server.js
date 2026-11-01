@@ -12,7 +12,7 @@ const server = app.listen(PORT, '127.0.0.1', async () => {
     const healthData = await healthRes.json();
     console.log('[TEST PASS] Health Check:', healthData);
     if (healthData.status !== 'online') throw new Error('Health check returned offline status');
-    if (healthData.version !== '1.0.1') throw new Error('Expected version 1.0.1');
+    if (healthData.version !== '1.0.2') throw new Error('Expected version 1.0.2');
     if (healthData.timezone !== 'Asia/Kolkata') throw new Error('Expected timezone Asia/Kolkata');
 
     // 2. Test Dynamic Temporal Context Utility (Server)

@@ -21,7 +21,7 @@ export default async (req, context) => {
       status: 'online',
       product: 'KAIRO AI',
       tagline: 'Intelligence Beyond Limits.',
-      version: '1.0.1',
+      version: '1.0.2',
       timezone: 'Asia/Kolkata',
       runtime: 'Netlify Functions (Serverless)',
       model: process.env.GEMINI_MODEL || 'gemini-flash-lite-latest',

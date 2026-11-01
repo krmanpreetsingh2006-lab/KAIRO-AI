@@ -1,6 +1,6 @@
 {
   "name": "kairo-ai-server",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "KAIRO AI Backend API Relay for Google Gemini",
   "main": "server.js",
   "type": "module",

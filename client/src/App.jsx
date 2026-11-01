@@ -10,7 +10,7 @@ function MainLayout() {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   return (
-    <div className="flex h-screen w-screen overflow-hidden bg-[#07080C] text-slate-100 font-sans">
+    <div className="flex h-screen h-[100dvh] w-full max-w-[100vw] overflow-hidden bg-[#07080C] text-slate-100 font-sans">
       {/* Sidebar */}
       <Sidebar
         mobileOpen={mobileOpen}

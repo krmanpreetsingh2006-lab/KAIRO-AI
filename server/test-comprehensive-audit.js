@@ -1,5 +1,5 @@
 import { getAuthoritativeTemporalContext as getServerTemporal } from './utils/dateTime.js';
-import { getAuthoritativeTemporalContext as getNetlifyTemporal } from '../netlify/functions/utils/dateTime.js';
+import { getAuthoritativeTemporalContext as getNetlifyTemporal } from '../netlify/functions/_utils/dateTime.js';
 import { validateChatPayload } from './middleware/validator.js';
 import healthNetlifyHandler from '../netlify/functions/health.js';
 import chatNetlifyHandler from '../netlify/functions/chat.js';
@@ -156,7 +156,7 @@ async function runComprehensiveAudit() {
   const netlifyHealthRes = await healthNetlifyHandler(netlifyHealthReq);
   const netlifyHealthData = await netlifyHealthRes.json();
   assert(netlifyHealthData.status === 'online', 'Netlify health status is online');
-  assert(netlifyHealthData.version === '1.0.1', 'Netlify health reports version 1.0.1');
+  assert(netlifyHealthData.version === '1.0.2', 'Netlify health reports version 1.0.2');
   assert(netlifyHealthData.timezone === 'Asia/Kolkata', 'Netlify health reports timezone Asia/Kolkata');
   assert(typeof netlifyHealthData.apiKeyConfigured === 'boolean', 'API key configured status is a boolean (never exposed)');
 

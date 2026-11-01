@@ -83,7 +83,7 @@ export default function ChatMessage({
   if (isUser) {
     return (
       <div className="w-full flex justify-end animate-fadeIn">
-        <div className="max-w-[88%] sm:max-w-[80%] flex flex-col items-end gap-2.5">
+        <div className="max-w-[90%] sm:max-w-[80%] flex flex-col items-end gap-2">
           {/* Attached Images Grid */}
           {imageAttachments.length > 0 && (
             <div className={`grid gap-2 ${imageAttachments.length === 1 ? 'grid-cols-1' : 'grid-cols-2 sm:grid-cols-3'}`}>
@@ -145,7 +145,7 @@ export default function ChatMessage({
 
           {/* Text Bubble (if user entered text alongside attachments) */}
           {message.content && message.content.trim() !== '' && (
-            <div className="rounded-[24px] bg-[#161822] border border-white/[0.08] px-5 py-3.5 text-slate-100 text-[14.5px] sm:text-[15px] leading-relaxed shadow-md whitespace-pre-wrap hover:border-white/15 transition-all">
+            <div className="rounded-2xl sm:rounded-[22px] bg-[#151824] border border-white/[0.08] px-4 py-2.5 sm:px-5 sm:py-3.5 text-slate-100 text-[14px] sm:text-[14.5px] leading-relaxed shadow-sm break-words whitespace-pre-wrap hover:border-white/15 transition-colors">
               {message.content}
             </div>
           )}
@@ -189,11 +189,11 @@ export default function ChatMessage({
 
   // 2. Assistant Message: Clean, spacious conversational response
   return (
-    <div className="w-full flex gap-3.5 sm:gap-4.5 items-start group animate-fadeIn">
+    <div className="w-full flex gap-3 sm:gap-4 items-start group animate-fadeIn">
       {/* KAIRO AI Avatar */}
-      <div className="shrink-0 mt-1">
-        <div className="w-8 h-8 rounded-xl bg-[#0F121C] border border-cyan-500/30 flex items-center justify-center text-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.15)] relative">
-          <LogoIcon size={20} />
+      <div className="shrink-0 mt-0.5 sm:mt-1">
+        <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-[#0F121C] border border-cyan-500/30 flex items-center justify-center text-cyan-400 shadow-[0_0_12px_rgba(6,182,212,0.15)] relative">
+          <LogoIcon size={18} />
           {isStreaming && (
             <span className="absolute -top-1 -right-1 flex h-2.5 w-2.5">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
@@ -207,9 +207,9 @@ export default function ChatMessage({
       <div className="flex-1 min-w-0 space-y-2">
         {/* Error Notification */}
         {isError && (
-          <div className="flex items-start gap-3 p-4 rounded-2xl bg-red-950/40 border border-red-500/30 text-red-200 text-sm shadow-md">
+          <div className="flex items-start gap-3 p-3.5 sm:p-4 rounded-2xl bg-red-950/40 border border-red-500/30 text-red-200 text-xs sm:text-sm shadow-md">
             <AlertTriangle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
-            <div className="flex-1 text-xs sm:text-sm leading-relaxed">
+            <div className="flex-1 leading-relaxed">
               {message.content}
             </div>
           </div>
@@ -217,8 +217,8 @@ export default function ChatMessage({
 
         {/* Markdown Rendered Content */}
         {!isError && (
-          <div className="text-slate-100 text-[14.5px] sm:text-[15px] leading-[1.75] break-words font-sans">
-            <div className="prose prose-invert max-w-none prose-p:my-2.5 prose-p:leading-relaxed prose-headings:font-bold prose-headings:text-white prose-headings:tracking-tight prose-h1:text-xl prose-h2:text-lg prose-h3:text-base prose-ul:my-2.5 prose-ol:my-2.5 prose-li:my-1 prose-code:text-cyan-300 prose-code:bg-cyan-950/30 prose-code:border prose-code:border-cyan-800/30 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-md prose-code:font-mono prose-code:text-xs prose-pre:p-0 prose-pre:bg-transparent prose-blockquote:border-l-2 prose-blockquote:border-cyan-500 prose-blockquote:text-slate-300 prose-blockquote:pl-4 prose-blockquote:italic prose-a:text-cyan-400 prose-a:underline hover:prose-a:text-cyan-300 prose-table:border-collapse prose-th:border prose-th:border-white/10 prose-th:p-2.5 prose-th:bg-white/5 prose-td:border prose-td:border-white/10 prose-td:p-2.5">
+          <div className="text-slate-100 text-[14px] sm:text-[14.5px] leading-[1.7] break-words font-sans">
+            <div className="prose prose-invert max-w-none prose-p:my-2 prose-p:leading-relaxed prose-headings:font-bold prose-headings:text-white prose-headings:tracking-tight prose-h1:text-lg sm:prose-h1:text-xl prose-h2:text-base sm:prose-h2:text-lg prose-h3:text-sm sm:prose-h3:text-base prose-ul:my-2 prose-ol:my-2 prose-li:my-0.5 prose-code:text-cyan-300 prose-code:bg-cyan-950/40 prose-code:border prose-code:border-cyan-800/40 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-md prose-code:font-mono prose-code:text-xs prose-pre:p-0 prose-pre:bg-transparent prose-blockquote:border-l-2 prose-blockquote:border-cyan-500 prose-blockquote:text-slate-300 prose-blockquote:pl-3 prose-blockquote:italic prose-a:text-cyan-400 prose-a:underline hover:prose-a:text-cyan-300 prose-table:border-collapse prose-th:border prose-th:border-white/10 prose-th:p-2.5 prose-th:bg-white/5 prose-td:border prose-td:border-white/10 prose-td:p-2.5">
               <ReactMarkdown
                 remarkPlugins={[remarkGfm]}
                 components={{

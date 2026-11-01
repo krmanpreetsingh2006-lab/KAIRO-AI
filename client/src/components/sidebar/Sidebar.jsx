@@ -26,6 +26,7 @@ export default function Sidebar({
   const {
     conversations,
     activeId,
+    activeConversation,
     selectConversation,
     createNewChat,
     renameConversation,
@@ -38,17 +39,21 @@ export default function Sidebar({
   const { serverHealth, setIsSettingsOpen } = useSettings();
   const [showClearConfirm, setShowClearConfirm] = useState(false);
 
-  // Keyboard shortcut Ctrl+K / Cmd+K for new chat
+  // Keyboard shortcut Ctrl+K / Cmd+K for new chat and Escape to close mobile drawer
   useEffect(() => {
     const handleKeyDown = (e) => {
       if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
         e.preventDefault();
         createNewChat();
+        if (mobileOpen) onCloseMobile();
+      }
+      if (e.key === 'Escape' && mobileOpen) {
+        onCloseMobile();
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [createNewChat]);
+  }, [createNewChat, mobileOpen, onCloseMobile]);
 
   // Group conversations chronologically
   const groupedConversations = useMemo(() => {
@@ -124,15 +129,17 @@ export default function Sidebar({
         {/* Mobile Close Button */}
         <button
           onClick={onCloseMobile}
-          className="md:hidden p-1.5 rounded-xl text-slate-500 hover:text-slate-200 hover:bg-white/5 transition-colors"
+          className="md:hidden flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-slate-300 hover:text-white bg-white/5 hover:bg-white/10 border border-white/5 transition-all active:scale-95"
           title="Close drawer"
+          aria-label="Close drawer and return to chat"
         >
-          <X className="w-5 h-5" />
+          <span className="text-[11px] font-medium text-slate-300">Close</span>
+          <X className="w-4 h-4 text-slate-300" />
         </button>
       </div>
 
       {/* New Chat Primary Button */}
-      <div className="p-3">
+      <div className="p-3 pb-2">
         <button
           onClick={() => {
             createNewChat();
@@ -153,6 +160,20 @@ export default function Sidebar({
             </kbd>
           )}
         </button>
+
+        {/* Quick Return to Active Chat (Mobile Drawer only) */}
+        {mobileOpen && activeConversation && activeConversation.messages?.length > 0 && (
+          <button
+            onClick={onCloseMobile}
+            className="md:hidden w-full mt-2 flex items-center justify-between px-3 py-2 rounded-xl bg-cyan-500/10 hover:bg-cyan-500/15 text-slate-200 hover:text-white text-xs border border-cyan-500/20 transition-all active:scale-[0.99]"
+            title="Return to current conversation without losing messages"
+          >
+            <span className="truncate pr-2 text-slate-300 text-[11px]">
+              Resume: <strong className="text-cyan-300 font-semibold">{activeConversation.title || 'Current Chat'}</strong>
+            </span>
+            <span className="text-[10px] text-cyan-400 font-bold shrink-0">Open &rarr;</span>
+          </button>
+        )}
       </div>
 
       {/* Search Bar (hidden when collapsed) */}
@@ -427,15 +448,21 @@ export default function Sidebar({
 
       {/* Mobile Slide-Out Drawer */}
       {mobileOpen && (
-        <div className="md:hidden fixed inset-0 z-50 flex">
+        <div
+          className="md:hidden fixed inset-0 z-50 flex"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Navigation drawer"
+        >
           {/* Backdrop Blur Overlay */}
           <div
             onClick={onCloseMobile}
-            className="fixed inset-0 bg-black/75 backdrop-blur-md transition-opacity"
+            className="fixed inset-0 bg-black/80 backdrop-blur-md transition-opacity"
+            aria-hidden="true"
           />
 
           {/* Slide-out drawer panel */}
-          <div className="relative w-4/5 max-w-xs h-full bg-[#08090E] shadow-2xl z-10 animate-slideRight">
+          <div className="relative w-[85vw] max-w-xs sm:max-w-sm h-full bg-[#08090E] shadow-2xl z-10 animate-slideRight flex flex-col">
             {sidebarContent}
           </div>
         </div>

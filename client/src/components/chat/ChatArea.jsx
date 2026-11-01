@@ -69,41 +69,35 @@ export default function ChatArea({ onOpenMobileSidebar }) {
   return (
     <div className="flex-1 flex flex-col h-full bg-[#08090E] text-slate-100 relative overflow-hidden">
       {/* Top Header Bar */}
-      <header className="h-14 min-h-[56px] border-b border-white/[0.06] bg-[#0A0C14]/90 backdrop-blur-xl flex items-center justify-between px-4 sm:px-6 z-10 select-none shrink-0">
-        <div className="flex items-center gap-3 min-w-0">
+      <header className="h-14 min-h-[56px] border-b border-white/[0.06] bg-[#0A0C14]/90 backdrop-blur-xl flex items-center justify-between px-3.5 sm:px-6 z-10 select-none shrink-0">
+        <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
           {/* Mobile Sidebar Hamburger Toggle */}
           <button
             onClick={onOpenMobileSidebar}
-            className="md:hidden p-2 rounded-xl text-slate-400 hover:text-white hover:bg-white/5 transition-colors border border-transparent hover:border-white/5 active:scale-95"
-            title="Open Conversations"
-            aria-label="Open sidebar"
+            className="md:hidden h-9 w-9 flex items-center justify-center rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-slate-300 hover:text-white border border-white/10 active:scale-95 transition-all shrink-0"
+            title="Open Chat History & Navigation"
+            aria-label="Open chat history and navigation menu"
           >
-            <Menu className="w-5 h-5" />
+            <Menu className="w-4.5 h-4.5 text-slate-300" />
           </button>
 
-          {/* KAIRO AI Brand & Active Thread Title */}
-          <div className="flex items-center gap-2.5 min-w-0">
-            <button
-              onClick={createNewChat}
-              className="flex items-center gap-2 hover:opacity-90 transition-opacity select-none"
-              title="KAIRO AI Home"
-            >
-              <LogoIcon size={26} />
-              <div className="flex items-center gap-1.5">
-                <span className="font-extrabold text-[14px] sm:text-[15px] tracking-wide text-white">
-                  KAIRO
-                </span>
-                <span className="font-extrabold text-[14px] sm:text-[15px] bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
-                  AI
-                </span>
-                <span className="text-[9px] font-extrabold uppercase px-1.5 py-0.2 rounded-full tracking-wider bg-cyan-500/15 border border-cyan-400/30 text-cyan-300">
-                  PRO
-                </span>
-              </div>
-            </button>
+          {/* KAIRO AI Brand Display */}
+          <div className="flex items-center gap-2 min-w-0 select-none">
+            <LogoIcon size={24} />
+            <div className="flex items-center gap-1.5 min-w-0">
+              <span className="font-extrabold text-[15px] tracking-wide text-white">
+                KAIRO
+              </span>
+              <span className="font-extrabold text-[15px] bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
+                AI
+              </span>
+              <span className="text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded-full tracking-wider bg-cyan-500/15 border border-cyan-400/30 text-cyan-300 hidden sm:inline-block">
+                PRO
+              </span>
+            </div>
 
             {activeConversation?.title && activeConversation.title !== 'New Conversation' && (
-              <span className="hidden sm:inline-block text-xs text-slate-400 font-normal truncate max-w-[200px] md:max-w-md pl-2.5 border-l border-white/10">
+              <span className="hidden md:inline-block text-xs text-slate-400 font-normal truncate max-w-[200px] lg:max-w-md pl-3 border-l border-white/10">
                 {activeConversation.title}
               </span>
             )}
@@ -111,22 +105,22 @@ export default function ChatArea({ onOpenMobileSidebar }) {
         </div>
 
         {/* Right Header Controls */}
-        <div className="flex items-center gap-1 sm:gap-2">
-          {/* New Chat Button */}
+        <div className="flex items-center gap-2 shrink-0">
+          {/* Visually Balanced New Chat Button */}
           <button
             onClick={createNewChat}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-slate-300 hover:text-white text-xs font-medium border border-white/10 hover:border-cyan-500/30 transition-all shadow-sm active:scale-95"
-            title="New Chat"
+            className="h-9 flex items-center gap-1.5 px-3 sm:px-3.5 rounded-xl bg-gradient-to-r from-cyan-500/15 to-blue-500/15 hover:from-cyan-500/25 hover:to-blue-500/20 text-cyan-300 hover:text-white text-xs font-semibold border border-cyan-500/35 hover:border-cyan-400/55 shadow-sm active:scale-95 transition-all shrink-0"
+            title="Start New Chat"
             aria-label="Start new conversation"
           >
-            <Plus className="w-3.5 h-3.5 text-cyan-400" />
-            <span className="hidden sm:inline">New Chat</span>
+            <Plus className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
+            <span className="inline font-medium">New Chat</span>
           </button>
 
           {/* Settings Trigger */}
           <button
             onClick={() => setIsSettingsOpen(true)}
-            className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-white/5 transition-colors border border-transparent hover:border-white/5 active:scale-95"
+            className="h-9 w-9 flex items-center justify-center rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-slate-400 hover:text-white border border-white/10 active:scale-95 transition-all shrink-0"
             title="Settings"
             aria-label="Open settings"
           >

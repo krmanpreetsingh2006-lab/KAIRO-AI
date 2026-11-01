@@ -1,6 +1,6 @@
 import healthHandler from './functions/health.js';
 import chatHandler from './functions/chat.js';
-import { getAuthoritativeTemporalContext } from './functions/utils/dateTime.js';
+import { getAuthoritativeTemporalContext } from './functions/_utils/dateTime.js';
 
 async function runTests() {
   console.log('--- TESTING STREAMLINED NETLIFY SERVERLESS FUNCTIONS ---');

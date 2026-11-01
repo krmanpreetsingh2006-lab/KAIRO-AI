@@ -140,13 +140,15 @@ router.post(['/', '/stream'], validateChatPayload, async (req, res) => {
     const temporalContext = getAuthoritativeTemporalContext();
 
     const instructionParts = [
-      DEFAULT_SYSTEM_INSTRUCTION,
       temporalContext.systemInstructionText,
+      DEFAULT_SYSTEM_INSTRUCTION,
     ];
 
     if (systemInstruction && typeof systemInstruction === 'string' && systemInstruction.trim() !== '') {
       instructionParts.push(`Additional User Directives:\n${systemInstruction.trim()}`);
     }
+
+    instructionParts.push(`MANDATORY REAL-TIME RE-ANCHOR: Current Date is ${temporalContext.fullDate} (${temporalContext.weekday}), Time: ${temporalContext.time12} IST. If user asks for current date/day/time, strictly use this.`);
 
     const combinedSystemInstruction = instructionParts.join('\n\n');
 
