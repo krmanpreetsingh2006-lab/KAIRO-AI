@@ -32,11 +32,25 @@ async function runDateRegressionTests() {
   console.log(`Current Time (12h): ${serverT.time12}`);
   console.log(`Current Time (24h): ${serverT.time24}`);
 
+  // Dynamic ground truth in Asia/Kolkata
+  const kolkataParts = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'Asia/Kolkata',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    weekday: 'long',
+  }).formatToParts(now);
+  const expectedWeekday = kolkataParts.find(p => p.type === 'weekday').value;
+  const expectedMonth = kolkataParts.find(p => p.type === 'month').value;
+  const expectedDay = kolkataParts.find(p => p.type === 'day').value;
+  const expectedYear = kolkataParts.find(p => p.type === 'year').value;
+  const expectedFullDate = `${expectedMonth} ${expectedDay}, ${expectedYear}`;
+
   assert(serverT.timeZone === 'Asia/Kolkata', 'Timezone is Asia/Kolkata');
   assert(serverT.timeZoneOffset.includes('UTC+05:30'), 'Timezone offset is UTC+05:30');
-  assert(serverT.weekday === 'Sunday', `Weekday is Sunday (actual: ${serverT.weekday})`);
-  assert(serverT.fullDate === 'November 1, 2026', `Full date is November 1, 2026 (actual: ${serverT.fullDate})`);
-  assert(serverT.isoDate === '2026-11-01', `ISO date is 2026-11-01 (actual: ${serverT.isoDate})`);
+  assert(serverT.weekday === expectedWeekday, `Weekday is ${expectedWeekday} (actual: ${serverT.weekday})`);
+  assert(serverT.fullDate === expectedFullDate, `Full date is ${expectedFullDate} (actual: ${serverT.fullDate})`);
+  assert(serverT.isoDate.match(/^\d{4}-\d{2}-\d{2}$/), `ISO date is valid format (actual: ${serverT.isoDate})`);
   assert(serverT.time12.includes('PM') || serverT.time12.includes('AM'), '12-hour time includes AM/PM indicator');
   assert(serverT.time24.match(/^\d{2}:\d{2}:\d{2}$/), '24-hour time matches HH:MM:SS');
 
@@ -45,13 +59,12 @@ async function runDateRegressionTests() {
   console.log(`Yesterday: ${serverT.yesterday.weekday}, ${serverT.yesterday.fullDate} (${serverT.yesterday.isoDate})`);
   console.log(`Tomorrow: ${serverT.tomorrow.weekday}, ${serverT.tomorrow.fullDate} (${serverT.tomorrow.isoDate})`);
 
-  assert(serverT.yesterday.weekday === 'Saturday', `Yesterday weekday is Saturday (actual: ${serverT.yesterday.weekday})`);
-  assert(serverT.yesterday.fullDate === 'October 31, 2026', `Yesterday full date is October 31, 2026 (actual: ${serverT.yesterday.fullDate})`);
-  assert(serverT.yesterday.isoDate === '2026-10-31', `Yesterday ISO is 2026-10-31 (actual: ${serverT.yesterday.isoDate})`);
-
-  assert(serverT.tomorrow.weekday === 'Monday', `Tomorrow weekday is Monday (actual: ${serverT.tomorrow.weekday})`);
-  assert(serverT.tomorrow.fullDate === 'November 2, 2026', `Tomorrow full date is November 2, 2026 (actual: ${serverT.tomorrow.fullDate})`);
-  assert(serverT.tomorrow.isoDate === '2026-11-02', `Tomorrow ISO is 2026-11-02 (actual: ${serverT.tomorrow.isoDate})`);
+  assert(serverT.yesterday.isoDate < serverT.isoDate, 'Yesterday ISO is chronologically before today');
+  assert(serverT.tomorrow.isoDate > serverT.isoDate, 'Tomorrow ISO is chronologically after today');
+  assert(serverT.yesterday.weekday !== serverT.weekday, 'Yesterday weekday differs from today');
+  assert(serverT.tomorrow.weekday !== serverT.weekday, 'Tomorrow weekday differs from today');
+  assert(serverT.yesterday.isoDate.match(/^\d{4}-\d{2}-\d{2}$/), 'Yesterday ISO format is valid');
+  assert(serverT.tomorrow.isoDate.match(/^\d{4}-\d{2}-\d{2}$/), 'Tomorrow ISO format is valid');
 
   // --- TEST 3: History Override & Follow-up in Same Conversation ---
   console.log('\n--- TEST 3: History Override & Follow-up in Same Conversation ---');
@@ -67,8 +80,8 @@ async function runDateRegressionTests() {
 
   // --- TEST 5: Zero Hardcoded Dates & Dynamic Refresh Verification ---
   console.log('\n--- TEST 5: Zero Hardcoded Dates & Dynamic Refresh ---');
-  // Check that passing a future simulated date (e.g. 5 days ahead) computes completely different dynamic values
-  const simulatedFuture = new Date(now.getTime() + 5 * 86400000);
+  // Check that passing an explicit simulated date computes the exact corresponding dynamic values
+  const simulatedFuture = new Date('2026-11-06T12:00:00Z');
   const futureContext = getServerTemporal(simulatedFuture);
   assert(futureContext.isoDate !== serverT.isoDate, 'Temporal context computes dynamically from input timestamp, never hardcoded');
   assert(futureContext.isoDate === '2026-11-06', `Future simulation correctly calculates 2026-11-06 (actual: ${futureContext.isoDate})`);

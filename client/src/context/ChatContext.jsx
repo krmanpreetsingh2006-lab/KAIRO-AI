@@ -1,13 +1,60 @@
-import React, { createContext, useContext, useState, useRef, useCallback } from 'react';
+import React, { createContext, useContext, useState, useRef, useCallback, useEffect } from 'react';
 import { useLocalStorage } from '../hooks/useLocalStorage';
+import { useSessionStorage } from '../hooks/useSessionStorage';
 import { useSettings } from './SettingsContext';
 import { streamChat } from '../services/api';
 
 const ChatContext = createContext(null);
 
+/**
+ * Detects whether the current navigation event is a page refresh/reload.
+ */
+function isPageReload() {
+  if (typeof window === 'undefined') return false;
+  try {
+    if (typeof performance !== 'undefined' && performance.getEntriesByType) {
+      const navEntries = performance.getEntriesByType('navigation');
+      if (navEntries && navEntries.length > 0) {
+        return navEntries[0].type === 'reload';
+      }
+    }
+    if (typeof performance !== 'undefined' && performance.navigation) {
+      return performance.navigation.type === 1; // TYPE_RELOAD
+    }
+  } catch (e) {
+    // Fallback if performance API is restricted
+  }
+  return false;
+}
+
+/**
+ * Universal Home-First Initialization:
+ * On every application load (initial open, page reload F5, or browser reopen):
+ * - Always start clean on the Home Screen (activeId = null).
+ * - Existing chat history in localStorage is preserved 100% intact.
+ * - Stale or legacy active conversation pointers are cleared.
+ */
+function getInitialActiveConversationId() {
+  if (typeof window === 'undefined') return null;
+
+  try {
+    // 1. Permanently clean up legacy localStorage activeId to prevent stale cross-session restoration
+    window.localStorage.removeItem('kairo_active_conversation_id');
+
+    // 2. Clear any sessionStorage activeId so that normal page refresh or session restore
+    // opens cleanly on the Home Screen without trapping user in prior chats
+    window.sessionStorage.removeItem('kairo_active_conversation_id');
+    window.sessionStorage.setItem('kairo_session_initialized', 'true');
+    return null;
+  } catch (err) {
+    console.warn('[KAIRO Session] Error initializing active conversation:', err);
+    return null;
+  }
+}
+
 export function ChatProvider({ children }) {
   const [conversations, setConversations] = useLocalStorage('kairo_conversations', []);
-  const [activeId, setActiveId] = useLocalStorage('kairo_active_conversation_id', null);
+  const [activeId, setActiveId] = useSessionStorage('kairo_active_conversation_id', getInitialActiveConversationId);
   const [isGenerating, setIsGenerating] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [errorMessage, setErrorMessage] = useState(null);
@@ -18,18 +65,57 @@ export function ChatProvider({ children }) {
   // Active conversation object: match by activeId
   const activeConversation = conversations.find(c => c.id === activeId) || null;
 
+  // Listen for browser back / forward navigation between conversations
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const handlePopState = (e) => {
+      if (e.state && 'kairoConversationId' in e.state) {
+        setActiveId(e.state.kairoConversationId);
+      }
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, [setActiveId]);
+
   // Clear current error banner
   const clearError = useCallback(() => {
     setErrorMessage(null);
   }, []);
 
-  // Create a new blank conversation
-  const createNewChat = useCallback(() => {
+  // Universal Home-First: Return to clean Home Screen without modifying or deleting saved history
+  const goHome = useCallback(() => {
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();
       abortControllerRef.current = null;
     }
     setIsGenerating(false);
+    setActiveId(null);
+    setErrorMessage(null);
+    if (typeof window !== 'undefined' && window.history?.pushState) {
+      window.history.pushState({ kairoConversationId: null }, '');
+    }
+  }, [setActiveId]);
+
+  // Start New Chat: Navigates to clean Home Screen ready for first send
+  const createNewChat = useCallback(() => {
+    goHome();
+    return null;
+  }, [goHome]);
+
+  // Explicit blank thread generator (preserved for programmatic compatibility and test assertions)
+  const createBlankChat = useCallback(() => {
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+      abortControllerRef.current = null;
+    }
+    setIsGenerating(false);
+
+    if (activeConversation && Array.isArray(activeConversation.messages) && activeConversation.messages.length === 0) {
+      setErrorMessage(null);
+      return activeConversation.id;
+    }
 
     const newChat = {
       id: `kairo_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
@@ -42,8 +128,11 @@ export function ChatProvider({ children }) {
     setConversations(prev => [newChat, ...prev]);
     setActiveId(newChat.id);
     setErrorMessage(null);
+    if (typeof window !== 'undefined' && window.history?.pushState) {
+      window.history.pushState({ kairoConversationId: newChat.id }, '');
+    }
     return newChat.id;
-  }, [setConversations, setActiveId]);
+  }, [activeConversation, setConversations, setActiveId]);
 
   // Select an existing conversation
   const selectConversation = useCallback((id) => {
@@ -54,6 +143,9 @@ export function ChatProvider({ children }) {
     }
     setActiveId(id);
     setErrorMessage(null);
+    if (typeof window !== 'undefined' && window.history?.pushState) {
+      window.history.pushState({ kairoConversationId: id }, '');
+    }
   }, [isGenerating, setActiveId]);
 
   // Rename a conversation
@@ -447,7 +539,9 @@ export function ChatProvider({ children }) {
         errorMessage,
         setErrorMessage,
         clearError,
+        goHome,
         createNewChat,
+        createBlankChat,
         selectConversation,
         renameConversation,
         deleteConversation,

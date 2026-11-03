@@ -1,31 +1,88 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" shape-rendering="geometricPrecision">
   <defs>
-    <linearGradient id="kairoG1" x1="0%" y1="0%" x2="100%" y2="100%">
+    <!-- Bezel Metallic Stroke Gradient -->
+    <linearGradient id="favBezel" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.9" />
+      <stop offset="30%" stop-color="#06B6D4" stop-opacity="0.65" />
+      <stop offset="70%" stop-color="#3B82F6" stop-opacity="0.4" />
+      <stop offset="100%" stop-color="#0E1626" stop-opacity="0.9" />
+    </linearGradient>
+
+    <!-- Obsidian Glass Fill -->
+    <linearGradient id="favGlass" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0B0F1C" />
+      <stop offset="50%" stop-color="#080C16" />
+      <stop offset="100%" stop-color="#05070D" />
+    </linearGradient>
+
+    <!-- Metallic Spine Gradient -->
+    <linearGradient id="favSpine" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#38BDF8" />
-      <stop offset="50%" stop-color="#818CF8" />
-      <stop offset="100%" stop-color="#C084FC" />
+      <stop offset="45%" stop-color="#06B6D4" />
+      <stop offset="100%" stop-color="#2563EB" />
     </linearGradient>
-    <linearGradient id="kairoG2" x1="100%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#06B6D4" />
-      <stop offset="100%" stop-color="#9333EA" />
+
+    <!-- Metallic Chevrons Gradient -->
+    <linearGradient id="favChevrons" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#67E8F9" />
+      <stop offset="40%" stop-color="#0EA5E9" />
+      <stop offset="100%" stop-color="#1D4ED8" />
     </linearGradient>
-    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
-      <feGaussianBlur stdDeviation="3" result="blur" />
+
+    <!-- 3D Depth Under-Facet Gradient -->
+    <linearGradient id="favDepth" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0369A1" />
+      <stop offset="100%" stop-color="#1E3A8A" />
+    </linearGradient>
+
+    <!-- Glass Specular Sheen -->
+    <linearGradient id="favSheen" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.16" />
+      <stop offset="50%" stop-color="#FFFFFF" stop-opacity="0.03" />
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0" />
+    </linearGradient>
+
+    <!-- Specular Bevel Ridge Highlight -->
+    <linearGradient id="favSpecHighlight" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.8" />
+      <stop offset="60%" stop-color="#38BDF8" stop-opacity="0.35" />
+      <stop offset="100%" stop-color="#06B6D4" stop-opacity="0" />
+    </linearGradient>
+
+    <!-- Soft Glow Filter -->
+    <filter id="favGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="2.5" result="blur" />
       <feComposite in="SourceGraphic" in2="blur" operator="over" />
     </filter>
   </defs>
-  <!-- Background Pill/Rounded Hexagon -->
-  <rect width="64" height="64" rx="16" fill="#08090E" />
-  <rect width="62" height="62" x="1" y="1" rx="15" stroke="rgba(255, 255, 255, 0.1)" stroke-width="1.5" />
+
+  <!-- Background Obsidian Glass Shield -->
+  <rect x="3" y="3" width="58" height="58" rx="17" fill="url(#favGlass)" stroke="url(#favBezel)" stroke-width="1.5" />
+  <rect x="4.5" y="4.5" width="55" height="55" rx="15.5" stroke="rgba(255, 255, 255, 0.08)" stroke-width="0.8" fill="none" />
   
-  <!-- Stylized K Glyph with Quantum Facets -->
-  <g filter="url(#glow)">
-    <!-- Vertical Spine -->
-    <path d="M18 15C18 13.8954 18.8954 13 20 13H24C25.1046 13 26 13.8954 26 15V49C26 50.1046 25.1046 51 24 51H20C18.8954 51 18 50.1046 18 49V15Z" fill="url(#kairoG1)" />
-    <!-- Upper Wing -->
-    <path d="M28.5 30.5L39.8 15.5C40.6 14.4 42 13.8 43.3 14.1L45.8 14.7C47.2 15 47.9 16.5 47.1 17.6L36.2 32L47.5 46.5C48.3 47.5 47.6 49.1 46.2 49.3L43.5 49.8C42.2 50 41 49.4 40.2 48.4L28.5 33.5V30.5Z" fill="url(#kairoG2)" />
-    <!-- Central Quantum Core Spark -->
-    <circle cx="32" cy="32" r="3.5" fill="#FFFFFF" />
-    <circle cx="32" cy="32" r="5" stroke="url(#kairoG1)" stroke-width="1" />
+  <!-- Diagonal Glass Prism Sheen -->
+  <path d="M4.5 22C4.5 12.3 12.3 4.5 22 4.5H35L4.5 35V22Z" fill="url(#favSheen)" />
+
+  <!-- Ambient Core Light -->
+  <circle cx="32" cy="32" r="22" fill="#06B6D4" opacity="0.14" />
+
+  <!-- Central K Monogram with 3D Depth Facets -->
+  <g filter="url(#favGlow)">
+    <!-- 3D Depth Under-Extrusions -->
+    <path d="M20 16.8C20 15.7 20.9 14.8 22 14.8H25.5C26.6 14.8 27.5 15.7 27.5 16.8V48.8C27.5 49.9 26.6 50.8 25.5 50.8H22C20.9 50.8 20 49.9 20 48.8V16.8Z" fill="url(#favDepth)" opacity="0.85" />
+    <path d="M29.5 31.5L40.8 16.5C41.6 15.4 43 14.8 44.3 15.1L46.8 15.7C48.2 16 48.9 17.5 48.1 18.6L37.2 33L48.5 47.5C49.3 48.5 48.6 50.1 47.2 50.3L44.5 50.8C43.2 51 42 50.4 41.2 49.4L29.5 34.5V31.5Z" fill="url(#favDepth)" opacity="0.85" />
+
+    <!-- Front Metallic Spine -->
+    <path d="M19 16C19 14.8954 19.8954 14 21 14H24.5C25.6046 14 26.5 14.8954 26.5 16V48C26.5 49.1046 25.6046 50 24.5 50H21C19.8954 50 19 49.1046 19 48V16Z" fill="url(#favSpine)" />
+    <path d="M20.2 15.5V48.5" stroke="url(#favSpecHighlight)" stroke-width="0.85" stroke-linecap="round" />
+
+    <!-- Front Metallic Chevrons -->
+    <path d="M28.5 30.5L39.8 15.5C40.6 14.4 42 13.8 43.3 14.1L45.8 14.7C47.2 15 47.9 16.5 47.1 17.6L36.2 32L47.5 46.5C48.3 47.5 47.6 49.1 46.2 49.3L43.5 49.8C42.2 50 41 49.4 40.2 48.4L28.5 33.5V30.5Z" fill="url(#favChevrons)" />
+    <path d="M30 30.8L40.2 16.2C41 15.2 42.1 14.7 43.2 15L45 15.4" stroke="rgba(255, 255, 255, 0.7)" stroke-width="0.85" stroke-linecap="round" />
+
+    <!-- Central Quantum Core -->
+    <circle cx="32" cy="32" r="6.2" stroke="url(#favSpine)" stroke-width="1.1" stroke-dasharray="2.5 2" />
+    <circle cx="32" cy="32" r="3.6" fill="#080E1C" stroke="#38BDF8" stroke-width="0.9" />
+    <circle cx="32" cy="32" r="2.2" fill="#FFFFFF" />
   </g>
 </svg>

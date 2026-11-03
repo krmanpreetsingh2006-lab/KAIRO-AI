@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { SettingsProvider } from './context/SettingsContext';
 import { ChatProvider } from './context/ChatContext';
 import Sidebar from './components/sidebar/Sidebar';
@@ -8,6 +8,27 @@ import SettingsModal from './components/settings/SettingsModal';
 function MainLayout() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(false);
+
+  // Synchronize mobile drawer with browser back gesture & navigation
+  useEffect(() => {
+    if (!mobileOpen) return;
+
+    if (typeof window !== 'undefined' && window.history?.pushState) {
+      window.history.pushState({ kairoDrawerOpen: true }, '');
+    }
+
+    const handlePopState = (e) => {
+      setMobileOpen(false);
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+      if (typeof window !== 'undefined' && window.history?.state?.kairoDrawerOpen) {
+        window.history.back();
+      }
+    };
+  }, [mobileOpen]);
 
   return (
     <div className="flex h-screen h-[100dvh] w-full max-w-[100vw] overflow-hidden bg-[#07080C] text-slate-100 font-sans">

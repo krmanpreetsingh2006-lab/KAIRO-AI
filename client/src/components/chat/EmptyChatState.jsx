@@ -10,9 +10,9 @@ export default function EmptyChatState() {
       {/* Tasteful Center Brand Mark */}
       <div className="flex flex-col items-center text-center space-y-4 max-w-md">
         <div className="relative group">
-          <div className="absolute -inset-3 bg-gradient-to-r from-cyan-500/20 via-blue-500/20 to-cyan-500/20 rounded-3xl blur-xl opacity-60 group-hover:opacity-90 transition duration-700 pointer-events-none" />
-          <div className="relative bg-[#0D101A] p-4 rounded-3xl border border-white/10 shadow-2xl backdrop-blur-xl group-hover:border-cyan-500/30 transition-colors">
-            <LogoIcon size={52} animated />
+          <div className="absolute -inset-2.5 bg-gradient-to-r from-cyan-500/15 via-blue-500/15 to-cyan-500/15 rounded-2xl blur-lg opacity-60 group-hover:opacity-85 transition duration-500 pointer-events-none" />
+          <div className="relative bg-[#0D101A] p-3 sm:p-3.5 rounded-2xl border border-white/10 shadow-xl backdrop-blur-xl group-hover:border-cyan-500/30 transition-colors">
+            <LogoIcon size={42} animated />
           </div>
         </div>
 

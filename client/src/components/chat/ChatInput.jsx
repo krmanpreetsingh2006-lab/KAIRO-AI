@@ -12,6 +12,7 @@ import {
   FileSpreadsheet
 } from 'lucide-react';
 import { useSettings } from '../../context/SettingsContext';
+import { useChat } from '../../context/ChatContext';
 
 const MAX_CHAR_COUNT = 12000;
 const MAX_ATTACHMENTS = 5;
@@ -83,8 +84,19 @@ export default function ChatInput({
   const menuRef = useRef(null);
   const dragCounterRef = useRef(0);
   const { settings } = useSettings();
+  const { activeId, activeConversation } = useChat();
 
   const enterToSend = settings?.enterToSend !== false;
+
+  // Focus message composer on fresh conversation or when initiating new chat
+  useEffect(() => {
+    if (!activeConversation || (activeConversation.messages && activeConversation.messages.length === 0)) {
+      const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+      if (!isMobile && textareaRef.current) {
+        textareaRef.current.focus();
+      }
+    }
+  }, [activeId]);
 
   // Auto-resize textarea to fit content seamlessly
   useEffect(() => {

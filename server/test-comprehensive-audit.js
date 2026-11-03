@@ -156,7 +156,7 @@ async function runComprehensiveAudit() {
   const netlifyHealthRes = await healthNetlifyHandler(netlifyHealthReq);
   const netlifyHealthData = await netlifyHealthRes.json();
   assert(netlifyHealthData.status === 'online', 'Netlify health status is online');
-  assert(netlifyHealthData.version === '1.0.2', 'Netlify health reports version 1.0.2');
+  assert(netlifyHealthData.version === '1.0.3', 'Netlify health reports version 1.0.3');
   assert(netlifyHealthData.timezone === 'Asia/Kolkata', 'Netlify health reports timezone Asia/Kolkata');
   assert(typeof netlifyHealthData.apiKeyConfigured === 'boolean', 'API key configured status is a boolean (never exposed)');
 

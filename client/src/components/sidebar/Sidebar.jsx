@@ -10,6 +10,7 @@ import {
   HardDrive,
   X,
   Sparkles,
+  Home,
 } from 'lucide-react';
 import Logo, { LogoIcon } from '../common/Logo';
 import SearchBar from './SearchBar';
@@ -29,6 +30,7 @@ export default function Sidebar({
     activeConversation,
     selectConversation,
     createNewChat,
+    goHome,
     renameConversation,
     deleteConversation,
     clearAllConversations,
@@ -54,6 +56,18 @@ export default function Sidebar({
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [createNewChat, mobileOpen, onCloseMobile]);
+
+  // Lock background scroll when mobile drawer is open to prevent touch bleed-through
+  useEffect(() => {
+    if (!mobileOpen || typeof document === 'undefined') return;
+
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.body.style.overflow = originalOverflow;
+    };
+  }, [mobileOpen]);
 
   // Group conversations chronologically
   const groupedConversations = useMemo(() => {
@@ -104,14 +118,20 @@ export default function Sidebar({
             size="sm"
             showTagline={true}
             showPro={true}
-            onClick={createNewChat}
+            onClick={() => {
+              goHome();
+              if (mobileOpen) onCloseMobile();
+            }}
             className="cursor-pointer"
           />
         ) : (
           <button
-            onClick={createNewChat}
+            onClick={() => {
+              goHome();
+              if (mobileOpen) onCloseMobile();
+            }}
             className="p-1 hover:scale-105 transition-transform"
-            title="KAIRO AI"
+            title="KAIRO AI Home"
           >
             <LogoIcon size={32} />
           </button>
@@ -138,8 +158,27 @@ export default function Sidebar({
         </button>
       </div>
 
-      {/* New Chat Primary Button */}
-      <div className="p-3 pb-2">
+      {/* Navigation & Action Buttons */}
+      <div className="p-3 pb-2 space-y-1.5">
+        {/* Home Screen Navigation Action */}
+        <button
+          onClick={() => {
+            goHome();
+            if (mobileOpen) onCloseMobile();
+          }}
+          className={`w-full flex items-center ${
+            isCollapsed ? 'justify-center p-2.5' : 'justify-between px-3.5 py-2'
+          } rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-slate-300 hover:text-white font-medium text-xs border border-white/10 transition-all duration-200 active:scale-[0.98] group`}
+          title="Return to Home Screen"
+          aria-label="Return to Home Screen"
+        >
+          <div className="flex items-center gap-2">
+            <Home className="w-4 h-4 text-cyan-400 group-hover:scale-110 transition-transform shrink-0" />
+            {!isCollapsed && <span className="tracking-wide font-medium">Home</span>}
+          </div>
+        </button>
+
+        {/* New Chat Primary Button */}
         <button
           onClick={() => {
             createNewChat();
@@ -185,8 +224,8 @@ export default function Sidebar({
         />
       )}
 
-      {/* Conversation List (Scrollable) */}
-      <div className="flex-1 overflow-y-auto overflow-x-hidden py-2 space-y-4">
+      {/* Conversation List (Scrollable with touch containment) */}
+      <div className="flex-1 overflow-y-auto overflow-x-hidden py-2 space-y-4 overscroll-contain touch-pan-y">
         {isCollapsed ? (
           /* Collapsed Mini-list */
           <div className="space-y-1.5 px-2">
@@ -454,9 +493,10 @@ export default function Sidebar({
           aria-modal="true"
           aria-label="Navigation drawer"
         >
-          {/* Backdrop Blur Overlay */}
+          {/* Backdrop Blur Overlay with touch scroll prevention */}
           <div
             onClick={onCloseMobile}
+            onTouchMove={(e) => e.preventDefault()}
             className="fixed inset-0 bg-black/80 backdrop-blur-md transition-opacity"
             aria-hidden="true"
           />

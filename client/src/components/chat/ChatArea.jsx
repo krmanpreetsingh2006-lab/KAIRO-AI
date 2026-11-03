@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
-import { Menu, Plus, Settings, AlertTriangle, X } from 'lucide-react';
+import { Menu, Plus, Settings, AlertTriangle, X, Home } from 'lucide-react';
 import { useChat } from '../../context/ChatContext';
 import { useSettings } from '../../context/SettingsContext';
 import { LogoIcon } from '../common/Logo';
@@ -15,6 +15,7 @@ export default function ChatArea({ onOpenMobileSidebar }) {
     stopGeneration,
     isGenerating,
     createNewChat,
+    goHome,
     regenerateLastResponse,
     errorMessage,
     clearError,
@@ -81,8 +82,13 @@ export default function ChatArea({ onOpenMobileSidebar }) {
             <Menu className="w-4.5 h-4.5 text-slate-300" />
           </button>
 
-          {/* KAIRO AI Brand Display */}
-          <div className="flex items-center gap-2 min-w-0 select-none">
+          {/* KAIRO AI Brand Display & Home Action */}
+          <button
+            onClick={goHome}
+            className="flex items-center gap-2 min-w-0 select-none hover:opacity-90 active:scale-95 transition-all text-left cursor-pointer"
+            title="Return to Home Screen"
+            aria-label="Return to Home Screen"
+          >
             <LogoIcon size={24} />
             <div className="flex items-center gap-1.5 min-w-0">
               <span className="font-extrabold text-[15px] tracking-wide text-white">
@@ -101,15 +107,28 @@ export default function ChatArea({ onOpenMobileSidebar }) {
                 {activeConversation.title}
               </span>
             )}
-          </div>
+          </button>
         </div>
 
         {/* Right Header Controls */}
-        <div className="flex items-center gap-2 shrink-0">
+        <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+          {/* Home Button: visible and accessible in every active conversation */}
+          {activeConversation && (
+            <button
+              onClick={goHome}
+              className="h-9 flex items-center gap-1.5 px-2.5 sm:px-3 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-slate-300 hover:text-white text-xs font-medium border border-white/10 active:scale-95 transition-all shrink-0"
+              title="Return to Home Screen"
+              aria-label="Return to Home Screen"
+            >
+              <Home className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
+              <span className="hidden sm:inline font-medium">Home</span>
+            </button>
+          )}
+
           {/* Visually Balanced New Chat Button */}
           <button
             onClick={createNewChat}
-            className="h-9 flex items-center gap-1.5 px-3 sm:px-3.5 rounded-xl bg-gradient-to-r from-cyan-500/15 to-blue-500/15 hover:from-cyan-500/25 hover:to-blue-500/20 text-cyan-300 hover:text-white text-xs font-semibold border border-cyan-500/35 hover:border-cyan-400/55 shadow-sm active:scale-95 transition-all shrink-0"
+            className="h-9 flex items-center gap-1.5 px-2.5 sm:px-3.5 rounded-xl bg-gradient-to-r from-cyan-500/15 to-blue-500/15 hover:from-cyan-500/25 hover:to-blue-500/20 text-cyan-300 hover:text-white text-xs font-semibold border border-cyan-500/35 hover:border-cyan-400/55 shadow-sm active:scale-95 transition-all shrink-0"
             title="Start New Chat"
             aria-label="Start new conversation"
           >
@@ -167,7 +186,7 @@ export default function ChatArea({ onOpenMobileSidebar }) {
                 onRegenerate={regenerateLastResponse}
               />
             ))}
-            <div ref={messagesEndRef} className="h-6" />
+            <div ref={messagesEndRef} className="h-8 sm:h-12" />
           </div>
         )}
       </div>

@@ -193,3 +193,74 @@ pre code.hljs {
 .hljs-function {
   color: #818CF8 !important;
 }
+
+/* ================================================================
+   KAIRO AI — Sophisticated 3D Rotational Logo Motion
+   ================================================================ */
+@keyframes kairoSubtleRotate3D {
+  0% {
+    transform: rotateY(0deg) rotateX(0deg) translateZ(0px);
+    filter: drop-shadow(0 0 4px rgba(6, 182, 212, 0.4)) brightness(1);
+  }
+  12% {
+    /* Gentle pause in pristine front-facing position */
+    transform: rotateY(0deg) rotateX(0deg) translateZ(0px);
+    filter: drop-shadow(0 0 4px rgba(6, 182, 212, 0.4)) brightness(1);
+  }
+  32% {
+    /* Controlled rotation to the right (+14deg) with specular luster & depth elevation */
+    transform: rotateY(14deg) rotateX(1.5deg) translateZ(3px);
+    filter: drop-shadow(-3px 1px 8px rgba(34, 211, 238, 0.65)) brightness(1.15);
+  }
+  50% {
+    /* Smooth fluid transition back through center front-facing alignment */
+    transform: rotateY(0deg) rotateX(0deg) translateZ(0.5px);
+    filter: drop-shadow(0 0 5px rgba(6, 182, 212, 0.45)) brightness(1.02);
+  }
+  70% {
+    /* Controlled rotation to the left (-14deg) with specular luster & depth elevation */
+    transform: rotateY(-14deg) rotateX(-1.5deg) translateZ(3px);
+    filter: drop-shadow(3px 1px 8px rgba(59, 130, 246, 0.65)) brightness(1.15);
+  }
+  88% {
+    /* Decelerates smoothly into original front-facing position */
+    transform: rotateY(0deg) rotateX(0deg) translateZ(0px);
+    filter: drop-shadow(0 0 4px rgba(6, 182, 212, 0.4)) brightness(1);
+  }
+  100% {
+    /* Settled peaceful resting position */
+    transform: rotateY(0deg) rotateX(0deg) translateZ(0px);
+    filter: drop-shadow(0 0 4px rgba(6, 182, 212, 0.4)) brightness(1);
+  }
+}
+
+.kairo-3d-logo-glyph {
+  transform-style: preserve-3d;
+  transform-origin: center center;
+  animation: kairoSubtleRotate3D 5.5s cubic-bezier(0.42, 0, 0.25, 1) infinite;
+  will-change: transform, filter;
+  backface-visibility: visible;
+}
+
+@keyframes kairoOrbitalSlowSpin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.kairo-orbital-node {
+  transform-origin: 32px 32px;
+  animation: kairoOrbitalSlowSpin 10s linear infinite;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kairo-3d-logo-glyph,
+  .kairo-orbital-node {
+    animation: none !important;
+    transform: none !important;
+  }
+}
